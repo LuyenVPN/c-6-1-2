@@ -10,6 +10,19 @@ Category list[100];
 int productCount = 0;
 Product menu[100]; 
  
+ 
+// dau khoang trang 
+int Space(const char *str) {
+    while (*str) {
+        if (!isspace((unsigned char)*str)) {
+            return 0;
+        }
+        str++;
+    }
+    return 1; 
+}
+
+
 // ham back va thoat chuong trinh 
 void backandexit() {
     char input;
@@ -67,7 +80,7 @@ void addCategory() {
         printf("Nhap ten danh muc can them: ");
         fgets(newCategory.name, sizeof(newCategory.name), stdin);
         newCategory.name[strcspn(newCategory.name, "\n")] = '\0';
-        if (strlen(newCategory.name) == 0) {
+        if (strlen(newCategory.name) == 0|| Space(newCategory.name)) {
             printf("Ten danh muc khong duoc de trong! Vui long nhap lai.\n");
             continue;
         }
@@ -107,7 +120,7 @@ void editCategory() {
                 printf("Nhap ten danh muc moi: ");
                 fgets(list[i].name, sizeof(list[i].name), stdin);
                 list[i].name[strcspn(list[i].name, "\n")] = '\0';  
-                if (strlen(list[i].name) == 0) {
+                if (strlen(list[i].name) == 0|| Space(list[i].name)) {
                     printf("Ten danh muc khong duoc de trong! Vui long nhap lai.\n");
                     continue;  
                 }
@@ -194,9 +207,16 @@ void deleteCategory() {
 void searchCategory() {
     char search[20];
     int found = 0;
-    printf("Nhap ten danh muc muon tim kiem: ");
-    fgets(search, sizeof(search), stdin);
-    search[strcspn(search, "\n")] = '\0'; 
+    while(1){
+	    printf("Nhap ten danh muc muon tim kiem: ");
+	    fgets(search, sizeof(search), stdin);
+	    search[strcspn(search, "\n")] = '\0'; 
+	    if (strlen(search) == 0|| Space(search)) {
+            printf("Ten khong hop le. Vui long nhap lai. \n");
+        } else {
+            break; 
+        }
+	}
     strlwr(search);
     printf("\nKet qua tim kiem danh muc: \"%s\"\n", search);
     for ( i = 0; i < count; i++) {
@@ -529,7 +549,7 @@ void addProduct() {
         printf("Nhap ten san pham: ");
         fgets(p.name, sizeof(p.name), stdin);
         p.name[strcspn(p.name, "\n")] = '\0';
-        if (strlen(p.name) == 0) {
+        if (strlen(p.name) == 0|| Space(p.name)) {
             printf("Ten san pham khong duoc de trong! Vui long nhap lai.\n");
             continue;
         }
@@ -601,8 +621,15 @@ void editProduct() {
 	printf("| %-5d | %-25s | %-10.f | %-10d | %-25s |\n", menu[productIndex].id, menu[productIndex].name, menu[productIndex].price, menu[productIndex].quantity, menu[productIndex].categoryname);
     printf("===========================================================================================\n");
     printf("Nhap ten san pham moi: ");
-    fgets(menu[productIndex].name, sizeof(menu[productIndex].name), stdin);
-    menu[productIndex].name[strcspn(menu[productIndex].name, "\n")] = '\0'; 
+    while(1){
+	    fgets(menu[productIndex].name, sizeof(menu[productIndex].name), stdin);
+	    menu[productIndex].name[strcspn(menu[productIndex].name, "\n")] = '\0'; 
+	    if (strlen(menu[productIndex].name) == 0|| Space(menu[productIndex].name)) {
+	        printf("Ten khong hop le. Vui long nhap lai. \n");
+	    } else {
+	        break; 
+		}
+	}
 	printf("Nhap gia moi: ");
 	scanf("%f", &menu[productIndex].price);
     fflush(stdin); 
@@ -685,9 +712,16 @@ void deleteProduct() {
 void searchProduct() {
     char search[50];
     int found = 0;
-    printf("Nhap ten san pham muon tim kiem: ");
-    fgets(search, sizeof(search), stdin);
-    search[strcspn(search, "\n")] = '\0'; 
+    while(1){
+	    printf("Nhap ten san pham muon tim kiem: ");
+	    fgets(search, sizeof(search), stdin);
+	    search[strcspn(search, "\n")] = '\0'; 
+	    if (strlen(search) == 0|| Space(search)) {
+            printf("Ten khong hop le. Vui long nhap lai. \n");
+        } else {
+            break; 
+        }
+	}
     strlwr(search);
     printf("\nKet qua tim kiem san pham la: \n");
     for (i = 0; i < productCount; i++) {
@@ -853,4 +887,3 @@ void loadProductsFromFile() {
     }
     fclose(file);
 }
-
