@@ -65,16 +65,30 @@ void addCategory() {
         return; 
     }
     Category newCategory;
-    int i, inserted = 0;
-    for (i = 0; i < count; i++) {
-        if (list[i].id == 0) {
-            newCategory.id = i + 1;
-            inserted = 1;
-            break;
+    while (1) {
+        printf("Nhap ID danh muc: ");
+        if (scanf("%d", &newCategory.id) != 1) { 
+            printf("ID phai la mot so nguyen. Vui long nhap lai.\n");
+            while (getchar() != '\n'); 
+            continue;
         }
-    }
-    if (!inserted) {
-        newCategory.id = count + 1;
+        if (newCategory.id <= 0) {
+            printf("ID khong hop le! Vui long nhap so nguyen duong.\n");
+        } else {
+            int idDuplicate = 0;
+            for ( i = 0; i < count; i++) {
+                if (list[i].id == newCategory.id) {
+                    idDuplicate = 1;
+                    break;
+                }
+            }
+            if (idDuplicate) {
+                printf("ID danh muc da ton tai! Vui long nhap ID khac.\n");
+            } else {
+                fflush(stdin); 
+                break; 
+            }
+        }
     }
     while (1) {
         printf("Nhap ten danh muc can them: ");
@@ -156,7 +170,7 @@ void deleteCategory() {
     printf("Nhap ID danh muc muon xoa: ");
     scanf("%d", &idToDelete);
     getchar(); 
-    if (idToDelete <= 0 || idToDelete > count) {
+    if (idToDelete <= 0 ) {
         printf("ID danh muc khong ton tai!\n");
         return;
     }
@@ -179,10 +193,6 @@ void deleteCategory() {
                         list[j] = list[j + 1];  
                     }
                     memset(&list[count - 1], 0, sizeof(Category));  
-					int k; 
-                    for ( k = 0; k < count - 1; k++) {
-                        list[k].id = k + 1; 
-                    }
                     count--; 
                     printf("Danh muc da duoc xoa thanh cong!\n");
                     saveCategoriesToFile();
@@ -544,7 +554,28 @@ void addProduct() {
 		return;
     }
     Product p;
-    p.id = productCount + 1; 
+    while (1) {
+        printf("Nhap ID san pham: ");
+        scanf("%d", &p.id);
+        getchar();
+        int idDuplicate = 0;
+        for (i = 0; i < productCount; i++) {
+            if (menu[i].id == p.id) {
+                idDuplicate = 1;
+                break;
+            }
+        }
+        if (idDuplicate) {
+            printf("ID san pham da ton tai! Vui long nhap ID khac.\n");
+            fflush(stdin); 
+        } else if (p.id <= 0) {
+            printf("ID khong hop le!\n");
+            fflush(stdin); 
+        } else {
+        	fflush(stdin); 
+            break; 
+        }
+    }
     while (1) {
         printf("Nhap ten san pham: ");
         fgets(p.name, sizeof(p.name), stdin);
@@ -594,6 +625,7 @@ void addProduct() {
     saveProductsToFile();
     fflush(stdin); 
 }
+
 
 void editProduct() {
     showProduct(); 
@@ -663,7 +695,7 @@ void deleteProduct() {
     printf("Nhap ID san pham muon xoa: ");
     scanf("%d", &idToDelete);
     getchar(); 
-    if (idToDelete <= 0 || idToDelete > productCount) {
+    if (idToDelete <= 0) {
         printf("ID san pham khong ton tai!\n");
         return;
     }
@@ -686,10 +718,7 @@ void deleteProduct() {
                     }
                     memset(&menu[productCount - 1], 0, sizeof(Product)); 
                     productCount--; 
-					int k; 
-                    for (k = 0; k < productCount; k++) {
-                        menu[k].id = k + 1; 
-                    }
+					
                     printf("San pham da duoc xoa thanh cong!\n");
                     saveProductsToFile();
                     break;
